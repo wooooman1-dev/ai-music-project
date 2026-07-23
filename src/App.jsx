@@ -3,7 +3,8 @@ import Dashboard from './components/Dashboard';
 import ProjectForm from './components/ProjectForm';
 import ProjectWorkspace from './components/ProjectWorkspace';
 import Sidebar from './components/Sidebar';
-import { createMusicProject, createPlanningDraft, initialProjectForm, statusLabel } from './data/projectModel';
+import { createMusicProject, initialProjectForm, statusLabel } from './data/projectModel';
+import { generatePlanning } from './services/planningService';
 import { loadProjects, saveProjects } from './utils/projectStorage';
 
 export default function App() {
@@ -39,7 +40,7 @@ export default function App() {
 
   function generatePlan() {
     if (!selected) return;
-    updateSelected({ plan: createPlanningDraft(selected), planApprovedAt: null, status: 'PLAN_REVIEW' });
+    updateSelected({ plan: generatePlanning(selected), planApprovedAt: null, status: 'PLAN_REVIEW' });
   }
 
   function updatePlan(field, value) {
