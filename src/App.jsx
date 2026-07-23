@@ -39,15 +39,18 @@ export default function App() {
 
   function generatePlan() {
     if (!selected) return;
-    updateSelected({ plan: createPlanningDraft(selected), status: 'PLAN_REVIEW' });
+    updateSelected({ plan: createPlanningDraft(selected), planApprovedAt: null, status: 'PLAN_REVIEW' });
   }
 
   function updatePlan(field, value) {
     if (!selected?.plan) return;
-    updateSelected({ plan: { ...selected.plan, [field]: value } });
+    updateSelected({ plan: { ...selected.plan, [field]: value }, planApprovedAt: null, status: 'PLAN_REVIEW' });
   }
 
-  function approvePlan() { updateSelected({ status: 'MUSIC_GENERATION' }); }
+  function approvePlan() {
+    if (!selected?.plan) return;
+    updateSelected({ status: 'MUSIC_GENERATION', planApprovedAt: new Date().toISOString() });
+  }
 
   function addAudio(file) {
     if (!file || !selected) return;
