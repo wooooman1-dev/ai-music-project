@@ -39,8 +39,9 @@ p { line-height: 1.6; }
 .stat span { display: block; color: #758098; font-size: 14px; }
 .stat strong { display: block; margin-top: 12px; font-size: 30px; }
 .panel { padding: 24px; }
-.panel-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.panel-title { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 20px; }
 .panel-title > span { font-size: 13px; color: #7b859a; }
+.source-note { margin: 6px 0 0; color: #8a6a24; font-size: 12px; font-weight: 600; }
 .project-row { display: flex; gap: 10px; border-top: 1px solid #edf0f5; padding: 8px 0; }
 .project-open { flex: 1; border: 0; display: flex; align-items: center; justify-content: space-between; text-align: left; padding: 14px; }
 .project-open div strong, .project-open div span { display: block; }
@@ -57,6 +58,7 @@ input, textarea { width: 100%; border: 1px solid #dbe0e9; border-radius: 10px; p
 input:focus, textarea:focus { border-color: #6486df; box-shadow: 0 0 0 3px rgba(70, 111, 214, .1); }
 textarea { min-height: 92px; resize: vertical; line-height: 1.55; }
 textarea.lyrics { min-height: 250px; }
+.plan-fields label > small { color: #7b859a; font-weight: 500; }
 .form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 4px; }
 .workflow-steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 20px; }
 .workflow-steps div { display: flex; align-items: center; gap: 8px; padding: 10px; border-radius: 10px; color: #8a94a8; font-size: 12px; background: #eceff4; }
@@ -65,6 +67,14 @@ textarea.lyrics { min-height: 250px; }
 .workflow-steps .complete span { background: #64ae84; color: #fff; }
 .workspace-grid { display: grid; grid-template-columns: 1.4fr .8fr; gap: 20px; align-items: start; }
 .plan-fields { display: grid; gap: 16px; }
+.lyrics-mode { margin: 0; border: 1px solid #dfe4ed; border-radius: 14px; padding: 16px; display: grid; gap: 10px; }
+.lyrics-mode legend { padding: 0 6px; color: #404b62; font-size: 13px; font-weight: 800; }
+.plan-fields .lyrics-mode label { grid-template-columns: 18px 1fr; align-items: start; gap: 10px; border: 1px solid #e4e8ef; border-radius: 10px; padding: 12px; cursor: pointer; }
+.lyrics-mode input { width: auto; margin-top: 3px; }
+.lyrics-mode span, .lyrics-mode strong, .lyrics-mode small { display: block; }
+.lyrics-mode small { margin-top: 4px; color: #7b859a; font-weight: 500; line-height: 1.45; }
+.field-with-action { display: grid; gap: 8px; }
+.field-with-action > button { justify-self: end; }
 .upload-box { border: 1.5px dashed #b9c3d5; background: #f8faff; color: #315fc7; border-radius: 14px; min-height: 92px; display: grid; place-items: center; cursor: pointer; font-weight: 700; }
 .upload-box input { display: none; }
 .audio-list { display: grid; gap: 12px; margin-top: 16px; }
@@ -75,6 +85,7 @@ textarea.lyrics { min-height: 250px; }
 audio { width: 100%; height: 38px; }
 .success-box { margin-top: 18px; border-radius: 14px; padding: 16px; background: #edf8f1; color: #246b44; }
 .success-box p { margin: 5px 0 0; }
+.approval-box { margin-top: 0; }
 @media (max-width: 1200px) {
   main { padding-left: 28px; padding-right: 28px; }
   .workspace-grid { grid-template-columns: 1fr; }
