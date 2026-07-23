@@ -29,6 +29,7 @@ export function createMusicProject(form) {
     createdAt: now,
     updatedAt: now,
     plan: null,
+    planApprovedAt: null,
     audioVersions: [],
     selectedAudioId: null,
     cover: null,
@@ -47,12 +48,14 @@ export function createPlanningDraft(project) {
       `${keyword.slice(0, 18)} 그리고 우리`,
     ],
     concept: `${project.listeningContext}에 어울리는 ${project.genre} 곡입니다. ${project.mood}의 정서를 유지하면서 첫 10초 안에 분위기가 드러나도록 구성합니다.`,
-    lyrics: `[Verse 1]\n조용히 번지는 불빛 아래\n오늘의 마음을 천천히 놓아봐\n\n[Pre-Chorus]\n멀어진 시간 끝에서도\n나는 여전히 너를 기억해\n\n[Chorus]\n이 밤이 지나도 남아 있을 멜로디\n우리의 작은 계절을 다시 불러줘`,
+    lyricsMode: 'suno',
+    customLyrics: '',
     sunoPrompt: `${project.genre}, ${project.mood}, ${project.bpm} BPM, ${project.vocalType}, ${project.language}, intimate vocal, memorable chorus, short intro, polished modern production`,
     negativePrompt: project.negativePrompt,
     coverPrompt: `cinematic album cover for ${project.genre}, ${project.mood}, minimal composition, emotional night atmosphere, no text, square format`,
     youtubeTitle: `${project.name || '새 노래'} | ${project.genre} AI Music`,
     youtubeDescription: `${project.idea}\n\nCreated with Bright Music.`,
+    generationSource: 'template',
   };
 }
 
