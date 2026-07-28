@@ -1,5 +1,21 @@
 import { parsePlanningDraft } from './parser';
 
+const PLANNING_INPUT_FIELDS = [
+  'name',
+  'idea',
+  'genre',
+  'mood',
+  'bpm',
+  'vocalType',
+  'language',
+  'listeningContext',
+  'negativePrompt',
+];
+
+function createPlanningInput(project) {
+  return Object.fromEntries(PLANNING_INPUT_FIELDS.map((field) => [field, project?.[field] ?? '']));
+}
+
 async function readJson(response) {
   try {
     return await response.json();
@@ -12,7 +28,7 @@ export async function createGeminiPlanningDraft(project, options = {}) {
   const response = await fetch('/api/planning/generate', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ project }),
+    body: JSON.stringify({ project: createPlanningInput(project) }),
     signal: options.signal,
   });
 
