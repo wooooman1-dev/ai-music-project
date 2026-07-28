@@ -12,6 +12,7 @@ export default function App() {
   const [selectedId, setSelectedId] = useState(projects[0]?.id ?? null);
   const [view, setView] = useState(projects.length ? 'workspace' : 'dashboard');
   const [form, setForm] = useState(initialProjectForm);
+  const [planningState, setPlanningState] = useState({ projectId: null, status: 'idle', error: '' });
 
   useEffect(() => { saveProjects(projects); }, [projects]);
 
@@ -34,13 +35,35 @@ export default function App() {
     setView('workspace');
   }
 
-  function updateSelected(patch) {
-    setProjects((current) => current.map((project) => project.id === selectedId ? { ...project, ...patch, updatedAt: new Date().toISOString() } : project));
+  function updateProject(projectId, patch) {
+    setProjects((current) => current.map((project) => project.id === projectId
+      ? { ...project, ...patch, updatedAt: new Date().toISOString() }
+      : project));
   }
 
-  function generatePlan() {
-    if (!selected) return;
-    updateSelected({ plan: generatePlanning(selected), planApprovedAt: null, status: 'PLAN_REVIEW' });
+  function updateSelected(patch) {
+    if (!selectedId) return;
+    updateProject(selectedId, patch);
+  }
+
+  async function generatePlan() {
+    const project = selected;
+    if (!project) return;
+    if (planningState.projectId === project.id && planningState.status === 'loading') return;
+
+    setPlanningState({ projectId: project.id, status: 'loading', error: '' });
+
+    try {
+      const plan = await generatePlanning(project);
+      updateProject(project.id, { plan, planApprovedAt: null, status: 'PLAN_REVIEW' });
+      setPlanningState({ projectId: project.id, status: 'success', error: '' });
+    } catch (error) {
+      setPlanningState({
+        projectId: project.id,
+        status: 'error',
+        error: error?.message || 'AI 음악 기획을 생성하지 못했습니다.',
+      });
+    }
   }
 
   function updatePlan(field, value) {
@@ -70,12 +93,16 @@ export default function App() {
     }
   }
 
+  const selectedPlanningState = planningState.projectId === selected?.id
+    ? planningState
+    : { status: 'idle', error: '' };
+
   return <div className="app-shell">
     <Sidebar projects={projects} selectedId={selectedId} view={view} onDashboard={() => setView('dashboard')} onNewProject={() => setView('new')} onOpenProject={openProject} />
     <main>
       {view === 'dashboard' && <Dashboard projects={projects} counts={counts} onCreate={() => setView('new')} onOpenProject={openProject} onDeleteProject={deleteProject} statusLabel={statusLabel} />}
       {view === 'new' && <ProjectForm form={form} onFormChange={setForm} onSubmit={createProject} onCancel={() => setView('dashboard')} />}
-      {view === 'workspace' && selected && <ProjectWorkspace project={selected} onBack={() => setView('dashboard')} onGeneratePlan={generatePlan} onUpdatePlan={updatePlan} onApprovePlan={approvePlan} onAddAudio={addAudio} onSelectAudio={selectAudio} />}
+      {view === 'workspace' && selected && <ProjectWorkspace project={selected} onBack={() => setView('dashboard')} onGeneratePlan={generatePlan} planningStatus={selectedPlanningState.status} planningError={selectedPlanningState.error} onUpdatePlan={updatePlan} onApprovePlan={approvePlan} onAddAudio={addAudio} onSelectAudio={selectAudio} />}
     </main>
   </div>;
 }
