@@ -28,6 +28,10 @@ export function parsePlanningDraft(value, metadata = {}) {
     throw new Error('AI planning response must contain exactly three title candidates.');
   }
 
+  if (new Set(titleCandidates.map((title) => title.toLocaleLowerCase())).size !== 3) {
+    throw new Error('AI planning response must contain three distinct title candidates.');
+  }
+
   const normalized = {
     titleCandidates,
     lyricsMode: value.lyricsMode === 'custom' ? 'custom' : 'suno',
