@@ -1,5 +1,13 @@
 const REQUIRED_TEXT_FIELDS = [
   'concept',
+  'marketability',
+  'targetAudience',
+  'emotionalArc',
+  'hookStrategy',
+  'chorusStrategy',
+  'instrumentation',
+  'vocalDirection',
+  'songStructure',
   'sunoPrompt',
   'negativePrompt',
   'coverPrompt',

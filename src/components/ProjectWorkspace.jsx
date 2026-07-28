@@ -1,5 +1,16 @@
 import { projectStatusOrder, statusLabel, stepActive } from '../data/projectModel';
 
+const strategyFields = [
+  ['marketability', '시장성', '청취 상황, 플랫폼 적합성, 차별점과 위험 요소'],
+  ['targetAudience', '타깃 청취자', '취향, 감정 상태와 실제 청취 상황'],
+  ['emotionalArc', '감정 흐름', '도입부터 엔딩까지 감정의 이동과 해소'],
+  ['hookStrategy', '훅 전략', '첫 10초와 반복 청취를 만드는 핵심 장치'],
+  ['chorusStrategy', '코러스 전략', '감정적 보상, 기억되는 문구와 편곡 확장'],
+  ['instrumentation', '악기 구성', '핵심 악기, 리듬 섹션, 공간감과 질감'],
+  ['vocalDirection', '보컬 방향', '음색, 음역, 발성, 더블링과 백킹 보컬'],
+  ['songStructure', '곡 구조', '인트로부터 아웃트로까지 권장 전개'],
+];
+
 function CopyButton({ value, children }) {
   return <button type="button" onClick={() => navigator.clipboard?.writeText(value || '')}>{children}</button>;
 }
@@ -39,10 +50,29 @@ export default function ProjectWorkspace({
         {planningError && <div className="error-box"><strong>기획 생성 실패</strong><p>{planningError}</p></div>}
 
         {!plan
-          ? <p className="muted">{generating ? 'Gemini가 곡의 콘셉트와 Suno 프롬프트를 설계하고 있습니다.' : '아직 생성된 기획이 없습니다. 입력한 아이디어를 기준으로 AI 기획 초안을 만드세요.'}</p>
+          ? <p className="muted">{generating ? 'Gemini가 시장성, 감정선, 훅과 Suno 프롬프트를 설계하고 있습니다.' : '아직 생성된 기획이 없습니다. 입력한 아이디어를 기준으로 AI 기획 초안을 만드세요.'}</p>
           : <div className="plan-fields">
             <label>제목 후보<textarea value={plan.titleCandidates.join('\n')} onChange={(event) => onUpdatePlan('titleCandidates', event.target.value.split('\n').filter(Boolean))} /></label>
-            <label>곡 콘셉트<textarea value={plan.concept} onChange={(event) => onUpdatePlan('concept', event.target.value)} /></label>
+            <label>곡 콘셉트<textarea value={plan.concept || ''} onChange={(event) => onUpdatePlan('concept', event.target.value)} /></label>
+
+            <div className="strategy-section">
+              <div className="strategy-heading">
+                <div>
+                  <p className="eyebrow">Producer Strategy</p>
+                  <h3>음악 제작 전략</h3>
+                </div>
+                <p>한 문단에 섞여 있던 판단을 실제 제작에 사용할 수 있는 항목으로 분리했습니다.</p>
+              </div>
+              <div className="strategy-grid">
+                {strategyFields.map(([field, label, description]) => (
+                  <label key={field}>
+                    <span>{label}</span>
+                    <small>{description}</small>
+                    <textarea value={plan[field] || ''} onChange={(event) => onUpdatePlan(field, event.target.value)} />
+                  </label>
+                ))}
+              </div>
+            </div>
 
             <fieldset className="lyrics-mode">
               <legend>가사 생성 방식</legend>

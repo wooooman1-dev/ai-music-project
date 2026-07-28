@@ -11,7 +11,39 @@ export const planningResponseSchema = {
     },
     concept: {
       type: 'string',
-      description: '청취 상황, 감정선, 전개 방식과 차별점을 포함한 곡 콘셉트',
+      description: '곡의 핵심 정체성과 청취 경험을 한 문단으로 요약한 콘셉트',
+    },
+    marketability: {
+      type: 'string',
+      description: '이 곡이 어떤 상황과 플랫폼에서 선택될 가능성이 있는지, 차별점과 주의점을 포함한 시장성 분석',
+    },
+    targetAudience: {
+      type: 'string',
+      description: '핵심 청취자의 취향, 감정 상태, 청취 상황을 구체적으로 정의한 타깃 설명',
+    },
+    emotionalArc: {
+      type: 'string',
+      description: '도입부터 엔딩까지 감정이 어떻게 이동하고 해소되는지 설명한 감정 흐름',
+    },
+    hookStrategy: {
+      type: 'string',
+      description: '첫 10초와 반복 청취를 유도할 멜로디, 리듬, 가사 또는 사운드 훅 전략',
+    },
+    chorusStrategy: {
+      type: 'string',
+      description: '코러스의 감정적 보상, 멜로디 상승, 반복 문구와 편곡 확장 방향',
+    },
+    instrumentation: {
+      type: 'string',
+      description: '핵심 악기, 보조 악기, 리듬 섹션, 공간계 효과와 사운드 질감 구성',
+    },
+    vocalDirection: {
+      type: 'string',
+      description: '보컬 음색, 음역, 발성, 감정 표현, 더블링과 코러스 처리 방향',
+    },
+    songStructure: {
+      type: 'string',
+      description: '인트로, 벌스, 프리코러스, 코러스, 브리지, 아웃트로의 권장 순서와 길이 전략',
     },
     lyricsMode: {
       type: 'string',
@@ -46,6 +78,14 @@ export const planningResponseSchema = {
   required: [
     'titleCandidates',
     'concept',
+    'marketability',
+    'targetAudience',
+    'emotionalArc',
+    'hookStrategy',
+    'chorusStrategy',
+    'instrumentation',
+    'vocalDirection',
+    'songStructure',
     'lyricsMode',
     'customLyrics',
     'sunoPrompt',
