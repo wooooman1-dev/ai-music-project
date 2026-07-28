@@ -149,12 +149,19 @@ export async function generateGeminiPlanning(project, options = {}) {
   }
 
   const generatedAt = new Date().toISOString();
-  const plan = parsePlanningDraft(parsed, {
-    source: 'gemini',
-    provider: 'gemini',
-    model: interaction?.model || model,
-    generatedAt,
-  });
+  let plan;
+  try {
+    plan = parsePlanningDraft(parsed, {
+      source: 'gemini',
+      provider: 'gemini',
+      model: interaction?.model || model,
+      generatedAt,
+    });
+  } catch (error) {
+    throw new GeminiProviderError(`Gemini 기획 결과 검증에 실패했습니다: ${error.message}`, {
+      code: 'gemini_invalid_planning',
+    });
+  }
 
   return {
     plan,
