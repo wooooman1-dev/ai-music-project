@@ -7,14 +7,34 @@ Bright Music은 AI 음악의 기획, 음원 버전 관리, 자산 제작, 발행
 - 대시보드
 - 음악 프로젝트 생성·저장·열기·삭제
 - 곡 아이디어, 장르, 분위기, BPM, 보컬, 언어 입력
-- 음악 기획 초안 생성
-- 제목 후보, 곡 콘셉트, 가사, Suno 프롬프트 편집
+- Gemini 기반 AI 음악 기획 생성
+- 제목 후보, 곡 콘셉트, 가사 방식, Suno 프롬프트 편집
+- 커버 프롬프트와 YouTube 메타데이터 생성
 - 기획 승인 상태 관리
 - MP3/WAV 음원 버전 등록 및 재생
 - 최종 음원 선택
 - 브라우저 LocalStorage 프로젝트 저장
 
-현재 기획 생성은 UI와 데이터 흐름을 검증하기 위한 로컬 템플릿 방식입니다. 다음 단계에서 Bright Music API와 n8n Webhook을 연결해 실제 AI 기획 워크플로우로 교체합니다.
+Gemini API 키는 React에 노출하지 않습니다. 브라우저는 `/api/planning/generate`만 호출하고, 로컬 Node API가 Gemini Interactions API를 호출합니다.
+
+## 환경 설정
+
+루트에 `.env` 파일을 만들고 Gemini API 키를 설정합니다.
+
+```env
+GEMINI_API_KEY=your_key_here
+GEMINI_MODEL=gemini-3.6-flash
+BRIGHT_MUSIC_API_PORT=8788
+VITE_PLANNING_PROVIDER=gemini
+```
+
+전체 예시는 `.env.example`을 참고하세요. `GEMINI_API_KEY`에는 `VITE_` 접두사를 붙이지 않습니다.
+
+Gemini를 호출하지 않고 기존 템플릿 기획만 확인하려면 다음 값을 사용합니다.
+
+```env
+VITE_PLANNING_PROVIDER=template
+```
 
 ## 실행
 
@@ -23,10 +43,21 @@ npm install
 npm run dev
 ```
 
-프로덕션 빌드:
+`npm run dev`는 Vite와 Bright Music API를 함께 실행합니다.
+
+개별 실행:
 
 ```bash
+npm run dev:api
+npm run dev:web
+```
+
+검증과 프로덕션 빌드:
+
+```bash
+npm run test
 npm run build
+npm run check
 npm run preview
 ```
 
@@ -42,13 +73,12 @@ DRAFT
 
 ## 다음 구현 순서
 
-1. PostgreSQL/Prisma 기반 영구 저장
-2. Bright Music API
-3. n8n 음악 기획 Webhook 연결
-4. 업로드 음원의 영구 파일 저장
-5. 앨범아트 생성과 선택
-6. FFmpeg 뮤직비디오 렌더링
-7. YouTube 검토 및 업로드
-8. 성과 데이터 수집
+1. AI 기획 화면의 시장성·타깃·훅·편곡 전략 확장
+2. PostgreSQL/Prisma 기반 영구 저장
+3. 업로드 음원의 영구 파일 저장
+4. 앨범아트 생성과 선택
+5. FFmpeg 뮤직비디오 렌더링
+6. YouTube 검토 및 업로드
+7. 성과 데이터 수집
 
 자세한 제품 원칙은 `docs/AI_MUSIC_PROJECT_GUIDE.md`를 기준으로 합니다.
